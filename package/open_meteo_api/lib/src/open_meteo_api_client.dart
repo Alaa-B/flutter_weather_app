@@ -55,14 +55,14 @@ class OpenMeteoApiClient {
 
     if (response.statusCode != 200) throw WeatherRequestFailure();
 
-    final weatherBody = jsonDecode(response.body) as Map<String ,dynamic>;
+    final weatherBody = jsonDecode(response.body) as Map<String, dynamic>;
 
     if (!weatherBody.containsKey('current_weather')) {
       throw WeatherNotFoundFailure();
     }
-    
-    final weatherJson = weatherBody [ 'current_weather'] as Map<String,dynamic>;
-  
+
+    final weatherJson = weatherBody['current_weather'] as Map<String, dynamic>;
+
     return Weather.fromJson(weatherJson);
   }
 }

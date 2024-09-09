@@ -7,7 +7,7 @@ void main() {
       test('return correct weather', () {
         expect(
             Weather.fromJson(
-                <String, dynamic>{'temperature': 15.3, 'weatherCode': 63}),
+                <String, dynamic>{'temperature': 15.3, 'weathercode': 63}),
             isA<Weather>()
                 .having((w) => w.temperature, 'temperature', 15.3)
                 .having((w) => w.weatherCode, 'weatherCode', 63));

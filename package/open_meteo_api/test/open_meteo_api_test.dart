@@ -31,19 +31,19 @@ void main() {
 
     group('location test', () {
       const query = 'mock-query';
-      test('make a correct http request', ()async {
+      test('make a correct http request', () async {
         final response = MockResponse();
         when(() => response.statusCode).thenReturn(200);
         when(() => response.body).thenReturn('{}');
         when(() => httpClient.get(any())).thenAnswer((_) async => response);
         try {
-         await apiClient.findLocation(query);
+          await apiClient.findLocation(query);
         } catch (_) {}
         verify(
-          ()async =>await httpClient.get(Uri.https(
+          () => httpClient.get(Uri.https(
             'geocoding-api.open-meteo.com',
             '/v1/search',
-            <String, String>{'name': query, 'count': '1'},
+            {'name': query, 'count': '1'},
           )),
         ).called(1);
       });
@@ -131,8 +131,8 @@ void main() {
         when(() => httpClient.get(any())).thenAnswer((_) async => response);
 
         expect(
-            () async =>
-               await apiClient.getWeather(latitude: latitude, longitude: longitude),
+            () async => await apiClient.getWeather(
+                latitude: latitude, longitude: longitude),
             throwsA(isA<WeatherRequestFailure>()));
       });
       test('throw WeatherNotFoundFailure current_weather is nul', () async {
@@ -142,8 +142,8 @@ void main() {
         when(() => httpClient.get(any())).thenAnswer((_) async => response);
 
         expect(
-            () async =>
-              await  apiClient.getWeather(latitude: latitude, longitude: longitude),
+            () async => await apiClient.getWeather(
+                latitude: latitude, longitude: longitude),
             throwsA(isA<WeatherNotFoundFailure>()));
       });
       test('good response weather', () async {
@@ -162,19 +162,21 @@ void main() {
 "temperature": 15.3,
 "windspeed": 25.8,
 "winddirection": 310,
-"weathercode": 63,
+"weathercode": 63.0,
 "time": "2022-09-12T01:00"
 }
 }
         ''');
         when(() => httpClient.get(any())).thenAnswer((_) async => response);
+
         final goodResponse = await apiClient.getWeather(
             latitude: latitude, longitude: longitude);
+
         expect(
             goodResponse,
             isA<Weather>()
                 .having((weather) => weather.temperature, 'temperature', 15.3)
-                .having((weather) => weather.weatherCode, 'weatherCode', 63));
+                .having((weather) => weather.weatherCode, 'weatherCode', 63.0));
       });
     });
   });

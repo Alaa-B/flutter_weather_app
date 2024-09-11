@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 part of 'weather_cubit.dart';
 
 enum WeatherStatus { initial, loading, success, failure }
@@ -12,11 +11,11 @@ extension GetWeatherStatus on WeatherStatus {
 
 @JsonSerializable()
 class WeatherState extends Equatable {
-  WeatherState(
-      {this.status = WeatherStatus.initial,
-      Weather? weather,
-      this.temperatureUnits = TemperatureUnits.celsius})
-      : weather = weather ?? Weather.emptyWeather;
+  WeatherState({
+    this.status = WeatherStatus.initial,
+    Weather? weather,
+    this.temperatureUnits = TemperatureUnits.celsius,
+  }) : weather = weather ?? Weather.emptyWeather;
 
   factory WeatherState.fromJson(Map<String, dynamic> json) =>
       _$WeatherStateFromJson(json);

@@ -10,6 +10,7 @@ part 'weather_state.dart';
 
 class WeatherCubit extends HydratedCubit<WeatherState> {
   WeatherCubit(this._weatherRepository) : super(WeatherState());
+
   final WeatherRepository _weatherRepository;
 
   Future<void> fetchWeather(String? city) async {
@@ -18,19 +19,22 @@ class WeatherCubit extends HydratedCubit<WeatherState> {
     emit(state.copyWith(status: WeatherStatus.loading));
 
     try {
-      final weather =
-          Weather.fromRepository(await _weatherRepository.getWeather(city));
-      final tempUnit = state.temperatureUnits;
-      final tempValue = tempUnit.isFahrenheit
+      final weather = Weather.fromRepository(
+        await _weatherRepository.getWeather(city),
+      );
+      final units = state.temperatureUnits;
+      final value = units.isFahrenheit
           ? weather.temperature.value.toFahrenheit()
-          : weather.temperature.value.toCelsius();
+          : weather.temperature.value;
 
-      emit(state.copyWith(
-        status: WeatherStatus.success,
-        temperatureUnits: tempUnit,
-        weather:
-            weather.copyWith(temperature: TemperatureValue(value: tempValue)),
-      ));
+      emit(
+        state.copyWith(
+          status: WeatherStatus.success,
+          temperatureUnits: units,
+          weather:
+              weather.copyWith(temperature: TemperatureValue(value: value)),
+        ),
+      );
     } on Exception {
       emit(state.copyWith(status: WeatherStatus.failure));
     }
@@ -45,7 +49,7 @@ class WeatherCubit extends HydratedCubit<WeatherState> {
       final tempUnit = state.temperatureUnits;
       final value = tempUnit.isFahrenheit
           ? weather.temperature.value.toFahrenheit()
-          : weather.temperature.value.toCelsius();
+          : weather.temperature.value;
 
       emit(state.copyWith(
         status: WeatherStatus.success,
@@ -66,8 +70,8 @@ class WeatherCubit extends HydratedCubit<WeatherState> {
       emit(state.copyWith(temperatureUnits: units));
       return;
     }
-    final weather = state.weather;
 
+    final weather = state.weather;
     if (weather != Weather.emptyWeather) {
       final temperature = weather.temperature;
       final value = units.isFahrenheit
@@ -89,7 +93,7 @@ class WeatherCubit extends HydratedCubit<WeatherState> {
       WeatherState.fromJson(json);
 
   @override
-  Map<String, dynamic>? toJson(WeatherState state) => state.toJson();
+  Map<String, dynamic> toJson(WeatherState state) => state.toJson();
 }
 
 extension on double {

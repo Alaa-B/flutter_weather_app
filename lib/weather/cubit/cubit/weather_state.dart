@@ -10,7 +10,7 @@ extension GetWeatherStatus on WeatherStatus {
 }
 
 @JsonSerializable()
-class WeatherState extends Equatable {
+final class WeatherState extends Equatable {
   WeatherState({
     this.status = WeatherStatus.initial,
     Weather? weather,
@@ -27,7 +27,7 @@ class WeatherState extends Equatable {
   Map<String, dynamic> toJson() => _$WeatherStateToJson(this);
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [status,weather,temperatureUnits];
 
   WeatherState copyWith({
     WeatherStatus? status,

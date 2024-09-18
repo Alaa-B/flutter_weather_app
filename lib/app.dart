@@ -29,6 +29,7 @@ class WeatherAppView extends StatelessWidget {
       (WeatherCubit cubit) => cubit.state.weather.toColor,
     );
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         appBarTheme: const AppBarTheme(
           backgroundColor: Colors.transparent,
